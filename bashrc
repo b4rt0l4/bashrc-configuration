@@ -73,6 +73,15 @@ else
 fi
 PS1=$PS1_BEGIN$PS1_END
 
+# Git status. https://github.com/magicmonty/bash-git-prompt needed.
+if [ -f "$HOME/.bash-git-prompt/gitprompt.sh" ]; then
+    GIT_PROMPT_ONLY_IN_REPO=1
+    GIT_PROMPT_START=$PS1_BEGIN
+    GIT_PROMPT_END=$PS1_END
+    GIT_PROMPT_IGNORE_STASH=1
+    source $HOME/.bash-git-prompt/gitprompt.sh
+fi
+
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
