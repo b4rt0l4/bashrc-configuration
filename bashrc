@@ -56,11 +56,23 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+#if [ "$color_prompt" = yes ]; then
+#    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+#else
+#    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+#fi
+
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}`if [ $? = 0 ]; then echo "\[\e[32m\]✔ "; else echo "\[\e[31m\]\[\e[5m\]✘ "; fi`\[\e[0m\](\t) \[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+	PS1_BEGIN='${debian_chroot:+($debian_chroot)}`if [ $? = 0 ]; then echo "\[\e[32m\]✔ "; else echo "\[\e[31m\]\[\e[5m\]✘ "; fi`'
+	PS1_BEGIN+='\[\e[0m\](\t) \[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$'
+	PS1_END='\n\[\033[0;32m\]└─\[\033[0m\033[0;32m\] \$\[\033[0m\033[0;32m\] ▶\[\033[00m\] '
 else
-    PS1='${debian_chroot:+($debian_chroot)}`if [ $? = 0 ]; then echo "✔ "; else echo "✘ "; fi`(\t) \u@\h:\w\$ '
+	PS1_BEGIN='${debian_chroot:+($debian_chroot)}`if [ $? = 0 ]; then echo "✔ "; else echo "✘ "; fi`'
+	PS1_BEGIN+='(\t) \u@\h:\w\$'
+	PS1_END+='\n└─ \$ ▶ '
 fi
+PS1=$PS1_BEGIN$PS1_END
+
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
@@ -91,6 +103,7 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias fuck='sudo $(history -p !!)'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
